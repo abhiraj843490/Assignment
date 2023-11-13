@@ -1,13 +1,12 @@
 package com.customer.controller;
 
+import com.customer.entity.CusAddress;
 import com.customer.entity.Customer;
 import com.customer.repository.CustomerRepo;
 import com.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,14 +54,18 @@ public class CustomerController {
         if(existingCus==null){
             throw new UsernameNotFoundException("customer not found with this is id: "+id);
         }
+        
+        CusAddress address = new CusAddress();
         existingCus.setFirst_name(customer.getFirst_name());
         existingCus.setLast_name(customer.getLast_name());
-        existingCus.setStreet(customer.getStreet());
-        existingCus.setCity(customer.getCity());
         existingCus.setEmail(customer.getEmail());
         existingCus.setPhone(customer.getPhone());
-        existingCus.setAddress(customer.getAddress());
-        existingCus.setState(customer.getState());
+
+        address.setStreet(customer.getAddress().getStreet());
+        address.setCity(customer.getAddress().getCity());
+        address.setAddress(customer.getAddress().getAddress());
+        address.setState(customer.getAddress().getState());
+        existingCus.setAddress(address);
         Customer updateDetail = customerService.updateDetail(id, existingCus);
         return ResponseEntity.ok(updateDetail);
     }

@@ -22,7 +22,9 @@ import java.util.List;
 @Table(name = "user")
 @Entity
 public class UserEntity implements UserDetails {
-    @Id
+   
+	private static final long serialVersionUID = 1L;
+	@Id
     @GeneratedValue
     private Long userId;
     @NotBlank
@@ -64,5 +66,11 @@ public class UserEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
